@@ -1,8 +1,5 @@
-using Lab01;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 using Moq;
 using System.Numerics;
-using Xunit;
 
 namespace Lab01.Tests
 {
@@ -11,7 +8,7 @@ namespace Lab01.Tests
         [Theory]
         [InlineData("5 10 15", 5, 10, 15)]
         [InlineData("0 1 3", 0, 1, 3)]
-        public void ReadInputLineTest(string input, int expectedN, int expectedA, int expectedB)
+        public void ReadInputLine_ReturnsExpectedTuple(string input, int expectedN, int expectedA, int expectedB)
         {
             var filesHandler = new FilesHandler();
             var result = filesHandler.ReadInputLine(input);
@@ -24,7 +21,7 @@ namespace Lab01.Tests
         [InlineData(5, 10, 15, true)]
         [InlineData(-1, 2, 3, false)]
         [InlineData(3, 4, 5, true)]
-        public void IsValuesValidTest(int N, int A, int B, bool expectedResult)
+        public void IsValuesValid_ReturnsExpectedValidationResult(int N, int A, int B, bool expectedResult)
         {
             var filesHandler = new FilesHandler();
             var result = filesHandler.IsValuesValid(N, A, B);
@@ -35,7 +32,7 @@ namespace Lab01.Tests
         [Theory]
         [InlineData(1, 1, 1, 4)]
         [InlineData(2, 1, 1, 9)]
-        public void CalculateTest(int N, int A, int B, long expectedResult)
+        public void Calculate_ReturnsExpectedResultForGivenInputs(int N, int A, int B, long expectedResult)
         {
             BigInteger result = Program.Calculate(N, A, B);
             Assert.Equal((BigInteger)expectedResult, result);
@@ -46,7 +43,7 @@ namespace Lab01.Tests
         [InlineData(7, 2, 21)]
         [InlineData(6, 3, 20)]
         [InlineData(5, 2, 10)]
-        public void BinomialCoefficientTest(int n, int k, long expectedResult)
+        public void BinomialCoefficient_ReturnsExpectedValue(int n, int k, long expectedResult)
         {
             BigInteger result = Program.BinomialCoefficient(n, k);
 

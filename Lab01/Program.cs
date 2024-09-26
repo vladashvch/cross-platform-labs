@@ -1,6 +1,4 @@
-﻿using Lab01;
-using System.Numerics;
-using System.Text;
+﻿using System.Numerics;
 
 namespace Lab01
 {
@@ -8,10 +6,10 @@ namespace Lab01
     {
         static void Main()
         {
-            Console.OutputEncoding = Encoding.UTF8;
-
             try
             {
+                Console.WriteLine("Lab-01");
+                Console.WriteLine();
                 ExecuteProgram();
 
             }
