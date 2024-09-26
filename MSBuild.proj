@@ -1,0 +1,23 @@
+<Project DefaultTargets="MSBuild" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Build and Run Projects -->
+  <Target Name="Build">
+    <MSBuild Projects="Lab01/Lab01.csproj" Targets="Build" />
+    <MSBuild Projects="Lab02/Lab02.csproj" Targets="Build" />
+  </Target>
+
+  <Target Name="Run" DependsOnTargets="Build">
+    <Exec Command="dotnet Lab01/bin/Debug/net8.0/Lab01.dll" />
+    <Exec Command="dotnet Lab02/bin/Debug/net8.0/Lab02.dll" />
+  </Target>
+
+   <Target Name="BuildTests">
+    <MSBuild Projects="Lab01.Tests/Lab01.Tests.csproj" Targets="Build" />
+    <MSBuild Projects="Lab02.Tests/Lab02.Tests.csproj" Targets="Build" />
+  </Target>
+
+  <Target Name="RunTests" DependsOnTargets="BuildTests">
+    <Exec Command="dotnet test Lab01.Tests/bin/Debug/net8.0/Lab01.Tests.dll" />
+    <Exec Command="dotnet test Lab02.Tests/bin/Debug/net8.0/Lab02.Tests.dll" />
+  </Target>
+
+</Project>
