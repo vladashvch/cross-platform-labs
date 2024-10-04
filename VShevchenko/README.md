@@ -15,20 +15,38 @@
 
     - Вікрийте загальний solution.
     - Перейдіть у проєкт "VShevchenko" `cd VShevchenko`
-    - Введіть `dotnet build`
-    - Введіть `dotnet pack`
+
+    Введіть
+
+    ```
+    dotnet build
+    ```
+
+    ```
+    dotnet pack
+    ```
 
     Це створить файл .nupkg у bin/Release.
 
 3. Release the package locally
 
-    - Відкрийте командний рядок як адміністратор у місці розташування файлу .nupkg ( тобто \VShevchenko\bin\Release).
-    - Введіть `nuget add VShevchenko.1.1.0.nupkg -Source "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\"`
+    - Відкрийте командний рядок як адміністратор у місці розташування файлу .nupkg (тобто \VShevchenko\bin\Release).
+
+    Введіть
+
+    ```
+    nuget add VShevchenko.1.1.0.nupkg -Source "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\"
+    ```
 
 4. Use your local NuGet package
 
     - Використайте консоль диспетчера пакетів (Package Manager Console)
     - Перейдіть у проєкт "Lab03"
-    - Інсталюйте локальний пакет NuGet за допомогою консолі.
 
-    `Install-Package VShevchenko`
+    Інсталюйте локальний пакет NuGet за допомогою Package Manager Console:
+
+    ```
+    Install-Package VShevchenko
+    ```
+
+5. Вітаю, тепер можна працювати із локальним Nuget пакетом "VShevchenko" :smile:
