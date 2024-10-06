@@ -25,20 +25,8 @@ Laboratory Work on subject Cross-Platform App Development by **Vlada Shevchenko*
 
 ## Usage
 
-Щоб швидко запустити певний проєкт, використовуйте msbuild файл "MSBuild.proj".
-
-*Quick commands to start all Labs 1-3 at once:*
-
 ```
-# Build all Labs 1-3
-msbuild MSBuild.proj /t:Build
-
-# Run all Labs 1-3
-msbuild MSBuild.proj /t:Run
-
-# Build all tests for Labs 1-3
-msbuild MSBuild.proj /t:BuildTests
-
-# Run all tests for Labs 1-3
-msbuild MSBuild.proj /t:RunTests
+  dotnet build Build.proj -p:Solution={LabNumber} -t:Build
+  dotnet build Build.proj -p:Solution={LabNumber} -t:Run
+  dotnet build Build.proj -p:Solution={LabNumber} -t:Test
 ```

@@ -1,6 +1,6 @@
 ﻿using VShevchenko;
 
-namespace Lab03
+namespace Lab3
 {
     public static class Program
     {

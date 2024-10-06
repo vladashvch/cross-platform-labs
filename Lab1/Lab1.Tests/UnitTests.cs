@@ -1,7 +1,7 @@
 using Moq;
 using System.Numerics;
 
-namespace Lab01.Tests
+namespace Lab1.Tests
 {
     public class UnitTests
     {

@@ -1,4 +1,4 @@
-﻿namespace Lab03
+﻿namespace Lab3
 {
     public class FilesHandler
     {
@@ -7,21 +7,13 @@
 
         public FilesHandler()
         {
-            string labFolder = "Lab03";
+            string labFolder = "Lab3";
             string baseDirectory = Directory.GetCurrentDirectory();
             string filesFolder = "files";
 
-            if (baseDirectory.EndsWith(labFolder))
-            {
-                _inputFilePath = Path.Combine(baseDirectory, filesFolder, "INPUT.TXT");
-                _outputFilePath = Path.Combine(baseDirectory, filesFolder, "OUTPUT.TXT");
-            }
-            else
-            {
-                _inputFilePath = Path.Combine(baseDirectory, labFolder, filesFolder, "INPUT.TXT");
-                _outputFilePath = Path.Combine(baseDirectory, labFolder, filesFolder, "OUTPUT.TXT");
-            }
-            
+            _inputFilePath = Path.Combine(baseDirectory, labFolder, filesFolder, "INPUT.TXT");
+            _outputFilePath = Path.Combine(baseDirectory, labFolder, filesFolder, "OUTPUT.TXT");
+
         }
 
         public string InputFilePath

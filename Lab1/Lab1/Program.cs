@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace Lab01
+namespace Lab1
 {
     public static class Program
     {
@@ -8,7 +8,7 @@ namespace Lab01
         {
             try
             {
-                Console.WriteLine("Lab-01");
+                Console.WriteLine("Lab-1");
                 Console.WriteLine();
                 ExecuteProgram();
 

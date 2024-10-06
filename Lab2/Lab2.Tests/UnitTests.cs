@@ -1,6 +1,6 @@
-using Lab02;
+using Lab2;
 
-namespace Lab02.Tests
+namespace Lab2.Tests
 {
     public class UnitTests
     {

@@ -1,6 +1,6 @@
 using VShevchenko;
 
-namespace Lab03.Tests
+namespace Lab3.Tests
 {
     public class UnitTests
     {

@@ -1,6 +1,6 @@
 ﻿
 
-namespace Lab02;
+namespace Lab2;
 
 public static class Program
 {
@@ -8,7 +8,7 @@ public static class Program
     {
         try
         {
-            Console.WriteLine("Lab-02");
+            Console.WriteLine("Lab-2");
             Console.WriteLine();
             ExecuteProgram();
 
