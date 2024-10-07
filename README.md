@@ -13,15 +13,15 @@ Laboratory Work on subject Cross-Platform App Development by **Vlada Shevchenko*
 
 ## Navigation
 
-- [Laboratory work №1](https://github.com/vladashvch/cross-platform-labs/tree/master/Lab01)
-  - [Tests](https://github.com/vladashvch/cross-platform-labs/tree/master/Lab01.Tests)
+- [Laboratory work №1](https://github.com/vladashvch/cross-platform-labs/tree/master/Lab1/Lab1)
+  - [Tests](https://github.com/vladashvch/cross-platform-labs/tree/master/Lab1/Lab1.Tests)
 
-- [Laboratory work №2](https://github.com/vladashvch/cross-platform-labs/tree/master/Lab02)
-  - [Tests](https://github.com/vladashvch/cross-platform-labs/tree/master/Lab02.Tests)
+- [Laboratory work №2](https://github.com/vladashvch/cross-platform-labs/tree/master/Lab2/Lab2)
+  - [Tests](https://github.com/vladashvch/cross-platform-labs/tree/master/Lab2/Lab2.Tests)
 
-- [Laboratory work №3](https://github.com/vladashvch/cross-platform-labs/tree/master/Lab03)
-  - [Class Library](https://github.com/vladashvch/cross-platform-labs/tree/master/VShevchenko)
-  - [Tests](https://github.com/vladashvch/cross-platform-labs/tree/master/Lab03.Tests)
+- [Laboratory work №3](https://github.com/vladashvch/cross-platform-labs/tree/master/Lab3/Lab3)
+  - [Class Library](https://github.com/vladashvch/cross-platform-labs/tree/master/Lab3/VShevchenko)
+  - [Tests](https://github.com/vladashvch/cross-platform-labs/tree/master/Lab3/Lab3.Tests)
 
 ## Usage
 
