@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="VShevchenko" Version="1.1.0" />
+    <ProjectReference Include="..\VShevchenko\VShevchenko.csproj" />
   </ItemGroup>
 
 </Project>
