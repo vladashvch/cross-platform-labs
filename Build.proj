@@ -7,7 +7,14 @@
       <ProjectFile Include="$(Solution)\*.csproj" />
    </ItemGroup>
 
-   <Target Name="Build">
+   <Target Name="PrepareLab3" Condition=" '$(Solution)' == 'Lab3' ">
+      <Exec Command="dotnet pack ./Lab3/VShevchenko/VShevchenko.csproj -c Release" />
+      <Exec Command="dotnet nuget remove source VShevchenko" ContinueOnError="true" />
+      <Exec Command="dotnet nuget add source ./Lab3/VShevchenko/bin/Release/ -n VShevchenko" />
+      <Exec Command="dotnet add ./Lab3/Lab3/Lab3.csproj package VShevchenko --source ./Lab3/VShevchenko/bin/Release/" />
+   </Target>
+
+   <Target Name="Build" DependsOnTargets="PrepareLab3">
       <PropertyGroup>
          <BuildProject>$(Solution)\$(Solution)\$(Solution).csproj</BuildProject>
       </PropertyGroup>
