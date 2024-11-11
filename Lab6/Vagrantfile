@@ -1,0 +1,62 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/focal64"
+  
+  # Налаштування пам'яті та CPU
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "4096"
+    vb.cpus = 4
+  end
+
+  # Переадресація портів
+  config.vm.network "forwarded_port", guest: 7290, host: 5552
+  config.vm.network "forwarded_port", guest: 7125, host: 5553
+
+  # Provisioning скрипт
+  config.vm.provision "shell", run: "always", inline: <<-SHELL
+    URL_MVC="http://0.0.0.0:7290"
+    URL_API="http://0.0.0.0:7125"
+
+    # Install .NET SDK
+    sudo snap install dotnet-runtime-80
+    sudo snap alias dotnet-runtime-80.dotnet dotnet
+    export DOTNET_ROOT=/snap/dotnet-runtime-80/current
+    sudo apt-get update && sudo apt-get install -y dotnet-sdk-8.0
+    sudo timedatectl set-timezone Asia/Bangkok
+
+    # Install Microsoft SQL Server
+    sudo apt-get update
+    sudo apt-get install -y curl apt-transport-https ca-certificates gnupg
+    curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+    curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-server.list
+    sudo apt-get update
+    sudo apt-get install -y mssql-server
+
+    sudo /opt/mssql/bin/mssql-conf setup
+    sudo apt-get install -y mssql-tools unixodbc-dev
+
+    # Install dotnet ef tool
+    sudo dotnet tool install --global dotnet-ef
+    export PATH="$PATH:/root/.dotnet/tools"
+
+    DB_HOST=$(hostname -I | awk '{print $1}')
+    cd /home/vagrant/project/Lab6/Lab6
+
+    # Оновлення значень у файлі .env
+    awk '!/^DB_PROVIDER=/ {print} END {print "DB_PROVIDER=SqlServer"}' .env > temp.env && mv temp.env .env
+    sed -i "s/^DB_HOST=.*/DB_HOST=$DB_HOST/" .env
+    awk '!/^DB_NAME=/ {print} END {print "DB_NAME=Lab6Db"}' .env > temp.env && mv temp.env .env
+    awk '!/^URL_MVC=/ {print} END {print "URL_MVC=" ENVIRON["URL_MVC"]}' .env > temp.env && mv temp.env .env
+
+    dotnet ef migrations add Initial
+    dotnet ef database update
+
+    dotnet restore
+    dotnet build
+    dotnet run --urls $URL_API
+
+    cd /home/vagrant/project/Lab6/Lab5
+    dotnet restore
+    dotnet build
+    dotnet run --urls $URL_MVC
+  SHELL
+end

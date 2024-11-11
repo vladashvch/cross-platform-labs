@@ -1,0 +1,4 @@
+.env
+.vagrant
+
+/Lab6/Migrations/

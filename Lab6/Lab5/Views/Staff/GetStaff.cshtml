@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "Staff";
+    var apiUrl = ViewData["ApiUrl"] as string;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table id="staffTable" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>First Name</th>
+            <th>Middle Name</th>
+            <th>Last Name</th>
+            <th>Date of Birth</th>
+            <th>Gender</th>
+            <th>Qualifications</th>
+            <th>Other Details</th>
+        </tr>
+    </thead>
+    <tbody id="staffTableBody">
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            window.location.href = '/login';
+        }
+
+        fetch(`@apiUrl/lab6/staff`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('staffTableBody');
+                data.forEach((staffMember, index) => {
+                    const row = `
+                        <tr>
+                            <td><a href="/staff/${staffMember.staffId}">${staffMember.staffId}</a></td>
+                            <td>${staffMember.firstName}</td>
+                            <td>${staffMember.middleName || 'N/A'}</td>
+                            <td>${staffMember.lastName}</td>
+                            <td>${new Date(staffMember.dateOfBirth).toLocaleDateString()}</td>
+                            <td>${staffMember.gender}</td>
+                            <td>${staffMember.qualifications}</td>
+                            <td>${staffMember.otherDetails || 'N/A'}</td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+            })
+            .catch(error => console.error('Помилка завантаження даних:', error));
+    });
+</script>

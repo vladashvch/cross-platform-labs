@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Medication Type Details";
+    var id = ViewData["id"] as string;
+    var apiUrl = ViewData["ApiUrl"] as string;
+}
+
+<h1>@ViewData["Title"]</h1>
+<div>
+    <div class="info-block">
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            window.location.href = '/login';
+        }
+
+        fetch(`@apiUrl/lab6/medication-types/@id`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const infoBlock = document.querySelector('.info-block');
+                const detailsHTML = `
+                        <p><strong>Medication Type Code:</strong> ${data.medicationTypeCode}</p>
+                        <p><strong>Medication Type Name:</strong> ${data.medicationTypeName}</p>
+                        <p><strong>Medication Type Description:</strong> ${data.medicationTypeDescription || 'N/A'}</p>
+                        <p><strong>Example:</strong> ${data.example || 'N/A'}</p>
+                        <p><strong>Medications Count:</strong> ${data.medications ? data.medications.length : 0}</p>
+                    `;
+                infoBlock.innerHTML = detailsHTML;
+            })
+            .catch(error => console.error('Помилка завантаження даних:', error));
+    });
+</script>

@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "Patient Medication Details";
+    var id = ViewData["id"] as int?;
+    var apiUrl = ViewData["ApiUrl"] as string;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <div class="info-block"></div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            window.location.href = '/login';
+        }
+
+        if (@id) {
+            fetch(`@apiUrl/lab6/patient-medications/${@id}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+
+                    const infoBlock = document.querySelector('.info-block');
+
+                    if (data.Patient) {
+                        const patient = data.Patient;
+                        const patientName = `${patient.FirstName || ''} ${patient.MiddleName || ''} ${patient.LastName || ''}`;
+
+                        const medication = data.Medication ? data.Medication.MedicationName : 'N/A';
+                        const dateAdministered = new Date(data.DateTimeAdministered).toLocaleDateString();
+                        const dosage = data.Dosage || 'N/A';
+                        const comments = data.Comments || 'N/A';
+                        const otherDetails = data.OtherDetails || 'N/A';
+
+                        const detailsHTML = `
+                            <p><strong>Patient Medication Id:</strong> ${data.PatientMedicationId}</p>
+                            <p><strong>Patient Name:</strong> ${patientName}</p>
+                            <p><strong>Medication:</strong> ${medication}</p>
+                            <p><strong>Date Administered:</strong> ${dateAdministered}</p>
+                            <p><strong>Dosage:</strong> ${dosage}</p>
+                            <p><strong>Comments:</strong> ${comments}</p>
+                            <p><strong>Other Details:</strong> ${otherDetails}</p>
+                        `;
+                        infoBlock.innerHTML = detailsHTML;
+                    } else {
+                        console.error('Patient data is missing.');
+                        infoBlock.innerHTML = '<p>Patient data not available.</p>';
+                    }
+                })
+                .catch(error => console.error('Error loading data:', error));
+        } else {
+            console.error('Invalid Patient Medication ID.');
+        }
+    });
+</script>

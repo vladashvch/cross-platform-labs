@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Staff";
+    var id = ViewData["id"] as int?;
+    var apiUrl = ViewData["ApiUrl"] as string;
+}
+
+<h1>@ViewData["Title"]</h1>
+<div>
+    <div class="info-block">
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            window.location.href = '/login';
+        }
+
+        fetch(`@apiUrl/lab6/staff/${@id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                const staffDetails = document.querySelector('.info-block');
+                const detailsHTML = `
+                    <p><strong>Staff Id:</strong> ${data.staffId}</p>
+                    <p><strong>First Name:</strong> ${data.firstName}</p>
+                    <p><strong>Middle Name:</strong> ${data.middleName || 'N/A'}</p>
+                    <p><strong>Last Name:</strong> ${data.lastName}</p>
+                    <p><strong>Date of Birth:</strong> ${new Date(data.dateOfBirth).toLocaleDateString()}</p>
+                    <p><strong>Gender:</strong> ${data.gender}</p>
+                    <p><strong>Qualifications:</strong> ${data.qualifications}</p>
+                    <p><strong>Other Details:</strong> ${data.otherDetails || 'N/A'}</p>
+                `;
+                staffDetails.innerHTML = detailsHTML;
+            })
+            .catch(error => console.error('Помилка завантаження даних:', error));
+    });
+</script>
