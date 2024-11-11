@@ -1,0 +1,94 @@
+﻿@{
+    ViewData["Title"] = "Lab2";
+}
+
+<div>
+    <h1 class="text-center">Lab2</h1>
+    <div class="flex-container">
+        <section class="task-section">
+            <h3>Завдання</h3>
+            <b>Варіант 17</b>
+            <p>Будемо називати натуральне число трипростим, якщо в ньому будь-які 3 цифри, що поспіль йдуть, утворюють тризначне просте число. Потрібно знайти кількість N-значних трипростих чисел.</p>
+
+            <h4>Вхідні дані</h4>
+            <p>Вхідний файл <strong>INPUT.TXT</strong> містить натуральне число N (3 ≤ N ≤ 10000).</p>
+
+            <h4>Вихідні дані</h4>
+            <p>У вихідний файл <strong>OUTPUT.TXT</strong> повинен містити кількість N-значних трипростих чисел, яку слід вивести за модулем <code>10<sup>9</sup> + 9</code>.</p>
+
+            <h4>Приклади</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>INPUT.TXT</th>
+                        <th>OUTPUT.TXT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>4</td>
+                        <td>204</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section class="solution-section">
+            <div>
+                <h3>Введіть ваші дані:</h3>
+                <form id="inputForm">
+                    <label for="nValue">N - Натуральне число від 3 до 10000:</label>
+                    <input type="number" id="nValue" name="nValue" min="1" max="20" required>
+
+                    <button type="submit">Відправити</button>
+                </form>
+            </div>
+            <div class="result">
+                <h3>Результат:</h3>
+                <p id="resultOutput"></p>
+            </div>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                window.location.href = '/login';
+            }
+
+            const form = document.getElementById('inputForm');
+            form.addEventListener('submit', async function (event) {
+                event.preventDefault();
+
+                const nValue = document.getElementById('nValue').value;
+                console.log(nValue)
+                const inputData = nValue;
+
+                try {
+                    const response = await fetch('/get-labs/lab2', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(inputData)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.text();
+                        document.getElementById('resultOutput').textContent = result;
+                    } else {
+                        const errorText = await response.text();
+                        document.getElementById('resultOutput').textContent = `Помилка: ${errorText}`;
+                    }
+                } catch (error) {
+                    console.error('Помилка при відправці запиту:', error);
+                }
+            });
+        });
+    </script>
+}
