@@ -1,0 +1,116 @@
+﻿@{
+    ViewData["Title"] = "Update Staff";
+    var id = ViewData["id"] as int?;
+    var apiUrl = ViewData["ApiUrl"] as string;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form id="editStaffForm" method="post">
+    <div class="mb-3">
+        <label for="firstName" class="form-label">First Name</label>
+        <input type="text" class="form-control" id="firstName" name="firstName" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="middleName" class="form-label">Middle Name</label>
+        <input type="text" class="form-control" id="middleName" name="middleName">
+    </div>
+
+    <div class="mb-3">
+        <label for="lastName" class="form-label">Last Name</label>
+        <input type="text" class="form-control" id="lastName" name="lastName" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="dateOfBirth" class="form-label">Date of Birth</label>
+        <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="gender" class="form-label">Gender</label>
+        <select class="form-select" id="gender" name="gender" required>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="qualifications" class="form-label">Qualifications</label>
+        <input type="text" class="form-control" id="qualifications" name="qualifications" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="otherDetails" class="form-label">Other Details</label>
+        <textarea class="form-control" id="otherDetails" name="otherDetails"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success">Update Staff</button>
+    <a href="/staff" class="btn btn-primary">Cancel</a>
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            window.location.href = '/login';
+        }
+
+        fetch(`@apiUrl/lab6/staff/@id`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data) {
+                document.getElementById('firstName').value = data.firstName;
+                document.getElementById('middleName').value = data.middleName || '';
+                document.getElementById('lastName').value = data.lastName;
+                document.getElementById('dateOfBirth').value = new Date(data.dateOfBirth).toISOString().split('T')[0];
+                document.getElementById('gender').value = data.gender;
+                document.getElementById('qualifications').value = data.qualifications;
+                document.getElementById('otherDetails').value = data.otherDetails || '';
+            }
+        })
+        .catch(error => console.error('Error fetching staff data:', error));
+
+        document.getElementById("editStaffForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const staffData = {
+                firstName: document.getElementById('firstName').value,
+                middleName: document.getElementById('middleName').value || null,
+                lastName: document.getElementById('lastName').value,
+                dateOfBirth: document.getElementById('dateOfBirth').value,
+                gender: document.getElementById('gender').value,
+                qualifications: document.getElementById('qualifications').value,
+                otherDetails: document.getElementById('otherDetails').value || null
+            };
+
+            fetch(`@apiUrl/lab6/staff/@id`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(staffData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Staff member updated successfully!');
+                    window.location.href = '/staff';
+                } else {
+                     alert('Failed to update staff member. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating staff member:', error);
+                alert('An error occurred. Please try again.');
+            });
+        });
+    });
+</script>

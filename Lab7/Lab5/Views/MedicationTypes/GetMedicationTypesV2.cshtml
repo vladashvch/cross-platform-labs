@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Medication Types V2";
+    var apiUrl = ViewData["ApiUrl"] as string;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table id="medicationTypesTable" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Medication Type Code</th>
+            <th>Medication Type Name</th>
+            <th>Medication Type Description</th>
+            <th>Example</th>
+            <th>Medications Count</th>
+        </tr>
+    </thead>
+    <tbody id="medicationTypesTableBody">
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            window.location.href = '/login';
+        }
+
+        fetch(`@apiUrl/lab6/v2/medication-types`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('medicationTypesTableBody');
+                data.forEach((medicationType) => {
+                    const row = `
+                                <tr>
+                                     <td><a href="/medication-types/${medicationType.medicationTypeCode}">${medicationType.medicationTypeCode}</a></td>
+                                     <td>${medicationType.medicationTypeName}</td>
+                                     <td>${medicationType.medicationTypeDescription || 'N/A'}</td>
+                                     <td>${medicationType.example || 'N/A'}</td>
+                                     <td>${medicationType.medications ? medicationType.medications.length : 0}</td>
+                                </tr>
+                            `;
+                    tableBody.innerHTML += row;
+                });
+            })
+            .catch(error => console.error('Помилка завантаження даних:', error));
+    });
+</script>

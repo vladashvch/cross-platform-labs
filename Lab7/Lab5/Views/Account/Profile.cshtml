@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Profile";
+}
+<div>
+    <h1>Ваш профіль</h1>
+    <div id="loading">Завантаження...</div>
+    <div id="profile-data" style="display: none;">
+        <p><strong>Ім'я користувача:</strong> <span id="username-display"></span></p>
+        <p><strong>ФІО:</strong> <span id="fullname-display"></span></p>
+        <p><strong>Телефон:</strong> <span id="phone-display"></span></p>
+        <p><strong>Електронна адреса:</strong> <span id="email-display"></span></p>
+    </div>
+    <div id="error-message" style="display: none;" class="alert alert-danger"></div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                window.location.href = '/login';
+            }
+
+            try {
+                const response = await fetch('/account/get-profile', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to fetch profile');
+                }
+
+                const userData = await response.json();
+                console.log(userData);
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('profile-data').style.display = 'block';
+
+                document.getElementById('username-display').textContent = userData.nickname || 'Не вказано';
+                document.getElementById('fullname-display').textContent = userData.name || 'Не вказано';
+                document.getElementById('phone-display').textContent = userData.phone || 'Не вказано';
+                document.getElementById('email-display').textContent = userData.email || 'Не вказано';
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                const errorDiv = document.getElementById('error-message');
+                errorDiv.style.display = 'block';
+                errorDiv.textContent = error.message;
+
+                if (error.message.includes('Unauthorized')) {
+                    localStorage.removeItem('token');
+                    setTimeout(() => window.location.href = '/login', 2000);
+                }
+            }
+            
+        });
+    </script>
+}

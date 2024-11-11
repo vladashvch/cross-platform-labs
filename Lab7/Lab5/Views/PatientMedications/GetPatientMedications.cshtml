@@ -1,0 +1,68 @@
+﻿@{
+    ViewData["Title"] = "Patient Medication Details";
+    var apiUrl = ViewData["ApiUrl"] as string;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<!-- Patient Medication Details Table -->
+<table id="patientMedicationTable" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Medication ID</th>
+            <th>Patient Name</th>
+            <th>Medication Name</th>
+            <th>Dosage</th>
+            <th>Date Administered</th>
+            <th>Comments</th>
+            <th>Other Details</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody">
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            window.location.href = '/login';
+        }
+
+        fetch(`@apiUrl/lab6/patient-medications`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('API Response:', data);
+                const tableBody = document.getElementById('tableBody');
+
+                tableBody.innerHTML = '';
+
+                if (Array.isArray(data.$values)) {
+                    data.$values.forEach(patientMedication => {
+                        const row = `
+                            <tr>
+                                <td><a href="/patient-medications/${patientMedication.PatientMedicationId}">${patientMedication.PatientMedicationId}</a></td>
+                                <td>${patientMedication.Patient.FirstName} ${patientMedication.Patient.MiddleName || ''} ${patientMedication.Patient.LastName}</td>
+                                <td>${patientMedication.Medication.MedicationName}</td>
+                                <td>${patientMedication.Dosage}</td>
+                                <td>${new Date(patientMedication.DateTimeAdministered).toLocaleDateString()}</td>
+                                <td>${patientMedication.Comments || 'N/A'}</td>
+                                <td>${patientMedication.OtherDetails || 'N/A'}</td>
+                            </tr>
+                        `;
+                        tableBody.innerHTML += row;
+                    });
+                } else {
+                    console.error('Expected an array under data.$values but received:', data);
+                }
+            })
+            .catch(error => console.error('Error fetching patient medication data:', error));
+    });
+</script>

@@ -1,0 +1,94 @@
+﻿@{
+    ViewData["Title"] = "Staff";
+    var apiUrl = ViewData["ApiUrl"] as string;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form id="addStaffForm" method="post">
+    <div class="mb-3">
+        <label for="firstName" class="form-label">First Name</label>
+        <input type="text" class="form-control" id="firstName" name="firstName" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="middleName" class="form-label">Middle Name</label>
+        <input type="text" class="form-control" id="middleName" name="middleName">
+    </div>
+
+    <div class="mb-3">
+        <label for="lastName" class="form-label">Last Name</label>
+        <input type="text" class="form-control" id="lastName" name="lastName" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="dateOfBirth" class="form-label">Date of Birth</label>
+        <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="gender" class="form-label">Gender</label>
+        <select class="form-select" id="gender" name="gender" required>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="qualifications" class="form-label">Qualifications</label>
+        <input type="text" class="form-control" id="qualifications" name="qualifications" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="otherDetails" class="form-label">Other Details</label>
+        <textarea class="form-control" id="otherDetails" name="otherDetails"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success">Add Staff</button>
+    <a href="/staff" class="btn btn-primary">Cancel</a>
+</form>
+
+<script>
+    document.getElementById("addStaffForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            window.location.href = '/login';
+            return;
+        }
+
+        const formData = new FormData(event.target);
+        const staffData = {
+            firstName: formData.get('firstName'),
+            middleName: formData.get('middleName') || null,
+            lastName: formData.get('lastName'),
+            dateOfBirth: formData.get('dateOfBirth'),
+            gender: formData.get('gender'),
+            qualifications: formData.get('qualifications'),
+            otherDetails: formData.get('otherDetails') || null
+        };
+
+        fetch(`@apiUrl/lab6/staff`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(staffData)
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Staff member added successfully!');
+                    window.location.href = '/staff';
+                } else {
+                    alert('Failed to add staff member. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error adding staff member:', error);
+                alert('An error occurred. Please try again.');
+            });
+    });
+</script>

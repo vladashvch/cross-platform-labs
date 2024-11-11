@@ -1,0 +1,152 @@
+﻿@{
+    ViewData["Title"] = "Appointments";
+    var apiUrl = ViewData["ApiUrl"] as string;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form id="filterForm">
+    <div class="form-group">
+        <label for="fromDate">From Date</label>
+        <input type="datetime-local" id="fromDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="toDate">To Date</label>
+        <input type="datetime-local" id="toDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="appointmentIds">Appointment IDs</label>
+        <input type="text" id="appointmentIds" class="form-control" placeholder="1, 2" />
+    </div>
+    <div class="form-group">
+        <label for="patientLastNameStart">Patient Last Name (Start)</label>
+        <input type="text" id="patientLastNameStart" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="patientLastNameEnd">Patient Last Name (End)</label>
+        <input type="text" id="patientLastNameEnd" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Apply Filters</button>
+</form>
+
+
+<table id="table" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Appointment ID</th>
+            <th>Patient Name</th>
+            <th>Staff Name</th>
+            <th>Date of Appointment</th>
+            <th>Other Details</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody">
+    </tbody>
+</table>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            window.location.href = '/login';
+        }
+
+        const filterForm = document.getElementById('filterForm');
+        filterForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const fromDate = document.getElementById('fromDate').value;
+            const toDate = document.getElementById('toDate').value;
+            const appointmentIds = document.getElementById('appointmentIds').value.split(',').map(id => id.trim()).filter(id => id);
+            const patientLastNameStart = document.getElementById('patientLastNameStart').value;
+            const patientLastNameEnd = document.getElementById('patientLastNameEnd').value;
+
+            let url = `@apiUrl/lab6/appointments?`;
+
+            if (fromDate) url += `fromDate=${encodeURIComponent(fromDate)}&`;
+            if (toDate) url += `toDate=${encodeURIComponent(toDate)}&`;
+            if (appointmentIds.length > 0) {
+                appointmentIds.forEach(id => {
+                    url += `appointmentIds=${encodeURIComponent(id)}&`;
+                });
+            }
+            if (patientLastNameStart) url += `patientLastNameStart=${encodeURIComponent(patientLastNameStart)}&`;
+            if (patientLastNameEnd) url += `patientLastNameEnd=${encodeURIComponent(patientLastNameEnd)}&`;
+
+            url = url.slice(0, -1);
+            console.log(url);
+
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('API Response:', data);
+                    const tableBody = document.getElementById('tableBody');
+                    tableBody.innerHTML = '';
+
+                    const appointments = data.$values || [];
+
+                    if (appointments.length > 0) {
+                        appointments.forEach(appointment => {
+                            const row = `
+                        <tr>
+                            <td>${appointment.AppointmentId}</td>
+                            <td>${appointment.Patient.FirstName} ${appointment.Patient.MiddleName || ''} ${appointment.Patient.LastName}</td>
+                            <td>${appointment.Staff.FirstName} ${appointment.Staff.MiddleName || ''} ${appointment.Staff.LastName}</td>
+                            <td>${new Date(appointment.DateTimeOfAppointment).toLocaleString()}</td>
+                            <td>${appointment.OtherDetails || 'N/A'}</td>
+                        </tr>
+                    `;
+                            tableBody.innerHTML += row;
+                        });
+                    } else {
+                        tableBody.innerHTML = '<tr><td colspan="5">No appointments found</td></tr>';
+                    }
+                })
+                .catch(error => console.error('Error fetching appointments:', error));
+        });
+
+
+        fetch(`@apiUrl/lab6/appointments`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('tableBody');
+                tableBody.innerHTML = '';
+
+                const appointments = data.$values || [];
+
+                if (appointments.length > 0) {
+                    appointments.forEach(appointment => {
+                        const row = `
+                        <tr>
+                            <td>${appointment.AppointmentId}</td>
+                            <td>${appointment.Patient.FirstName} ${appointment.Patient.MiddleName || ''} ${appointment.Patient.LastName}</td>
+                            <td>${appointment.Staff.FirstName} ${appointment.Staff.MiddleName || ''} ${appointment.Staff.LastName}</td>
+                            <td>${new Date(appointment.DateTimeOfAppointment).toLocaleString()}</td>
+                            <td>${appointment.OtherDetails || 'N/A'}</td>
+                        </tr>
+                    `;
+                        tableBody.innerHTML += row;
+                    });
+                } else {
+                    tableBody.innerHTML = '<tr><td colspan="5">No appointments found</td></tr>';
+                }
+            })
+            .catch(error => console.error('Error fetching appointments:', error));
+    });
+
+
+</script>

@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Lab5</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Lab5.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between align-items-center">
+                <ul class="navbar-nav flex-grow-1 d-flex align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark private-links" asp-area="" asp-controller="Labs" asp-action="Lab1">Lab1</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark private-links" asp-area="" asp-controller="Labs" asp-action="Lab2">Lab2</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark private-links" asp-area="" asp-controller="Labs" asp-action="Lab3">Lab3</a>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav flex-grow-1 d-flex align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark private-links" asp-area="" asp-controller="Staff" asp-action="GetStaff">Staff</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark private-links" asp-area="" asp-controller="MedicationTypes" asp-action="GetMedicationTypesV1">MedicationTypesV1</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark private-links" asp-area="" asp-controller="MedicationTypes" asp-action="GetMedicationTypesV2">MedicationTypesV2</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark private-links" asp-area="" asp-controller="PatientMedications" asp-action="GetPatientMedications">PatientMedications</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark private-links" asp-area="" asp-controller="Appointments" asp-action="Index">Appointments</a>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav d-flex align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark unauthorize-links" href="/signup">Signup</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark unauthorize-links" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark private-links" href="/profile">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark private-links"  onclick="logout()">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - Lab5
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = '/';
+        }
+
+        const token = localStorage.getItem('token');
+        const privateLinks = document.querySelectorAll('.private-links');
+        const unauthorizeLinks = document.querySelectorAll('.unauthorize-links');
+
+        if (!token) {
+            privateLinks.forEach(link => {
+                link.style.display = 'none';
+            });
+        } else {
+            unauthorizeLinks.forEach(link => {
+                link.style.display = 'none';
+            });
+        }
+    </script>
+</body>
+</html>

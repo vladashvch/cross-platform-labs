@@ -1,0 +1,105 @@
+﻿@{
+    ViewData["Title"] = "Staff";
+    var apiUrl = ViewData["ApiUrl"] as string;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<button id="addButton" class="btn btn-primary">Add Staff</button>
+
+<table id="staffTable" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>First Name</th>
+            <th>Middle Name</th>
+            <th>Last Name</th>
+            <th>Date of Birth</th>
+            <th>Gender</th>
+            <th>Qualifications</th>
+            <th>Other Details</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="staffTableBody">
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            window.location.href = '/login';
+        }
+
+        fetchStaffData();
+
+        function fetchStaffData() {
+            fetch(`@apiUrl/lab6/staff`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.getElementById('staffTableBody');
+                    tableBody.innerHTML = '';
+
+                    data.forEach(staffMember => {
+                        const row = `
+                                <tr>
+                                    <td><a href="/staff/${staffMember.staffId}">${staffMember.staffId}</a></td>
+                                    <td>${staffMember.firstName}</td>
+                                    <td>${staffMember.middleName || 'N/A'}</td>
+                                    <td>${staffMember.lastName}</td>
+                                    <td>${new Date(staffMember.dateOfBirth).toLocaleDateString()}</td>
+                                    <td>${staffMember.gender}</td>
+                                    <td>${staffMember.qualifications}</td>
+                                    <td>${staffMember.otherDetails || 'N/A'}</td>
+                                    <td><button class="btn btn-warning btn-sm" onclick="editStaff(${staffMember.staffId})">Edit</button></td>
+                                    <td><button class="btn btn-danger btn-sm" onclick="deleteStaff(${staffMember.staffId})">Delete</button></td>
+                                </tr>
+                            `;
+                        tableBody.innerHTML += row;
+                    });
+                })
+                .catch(error => console.error('Error loading staff data:', error));
+        }
+
+        window.editStaff = function (id) {
+            window.location.href = `/staff/edit/${id}`;
+        };
+
+        window.deleteStaff = function (id) {
+            if (confirm("Are you sure you want to delete this staff member?")) {
+                fetch(`@apiUrl/lab6/staff/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Staff member deleted successfully.');
+                            fetchStaffData();
+                        } else {
+                            alert('Error deleting staff member.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error deleting staff member:', error);
+                        alert('An error occurred.');
+                    });
+            }
+        };
+
+        document.getElementById('addButton').addEventListener('click', function () {
+            window.location.href = '/staff/create';
+        });
+    });
+</script>

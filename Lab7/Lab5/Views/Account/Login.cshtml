@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<div>
+    <h1 class="text-center">Login</h1>
+    <section>
+        <form id="loginForm">
+            <label for="username">Ім'я користувача:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Увійти</button>
+        </form>
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Error</div>
+        }
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert alert-success">@ViewBag.Message</div>
+        }
+    </section>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            console.log(username)
+            console.log(password)
+
+            try {
+                const response = await fetch('/account/loginAuth', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username: username, password: password })
+                });
+
+                const data = await response.json();
+                if (data.token) {
+                    console.log('Токен:', data.token);
+                    localStorage.setItem('token', data.token);
+                    window.location.href = '/home';
+
+                } else {
+                    console.error('Token not found in response:', data);
+                }
+            } catch (error) {
+                console.error('Login failed:', error);
+            }
+        });
+    </script>
+}
