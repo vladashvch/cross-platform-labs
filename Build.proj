@@ -14,7 +14,11 @@
       <Exec Command="dotnet add ./Lab3/Lab3/Lab3.csproj package VShevchenko --source ./Lab3/VShevchenko/bin/Release/" />
    </Target>
 
-   <Target Name="Build" DependsOnTargets="PrepareLab3">
+   <Target Name="PrepareLab4" Condition=" '$(Solution)' == 'Lab4' ">
+      <Exec Command="echo LAB_PATH= > $(Solution)\Lab4\.env" />
+   </Target>
+
+   <Target Name="Build" DependsOnTargets="PrepareLab3;PrepareLab4">
       <PropertyGroup>
          <BuildProject>$(Solution)\$(Solution)\$(Solution).csproj</BuildProject>
       </PropertyGroup>
@@ -28,10 +32,20 @@
       <Exec Command="dotnet test --logger &quot;console;verbosity=detailed&quot;" WorkingDirectory="$(TestDirectory)" />
    </Target>
 
-   <Target Name="Run">
+   <Target Name="Run" DependsOnTargets="Build">
       <PropertyGroup>
          <RunProject>$(Solution)\$(Solution).csproj</RunProject>
+         <CommandLineArgs Condition="'$(Solution)' == 'Lab4'">exit</CommandLineArgs>
       </PropertyGroup>
-      <Exec Command="dotnet run --project &quot;$(RunProject)&quot;" WorkingDirectory="$(Solution)" />
+      
+      <Exec 
+         Condition="'$(Solution)' == 'Lab4'"
+         Command="dotnet run --project &quot;$(RunProject)&quot; -- $(CommandLineArgs)" 
+         WorkingDirectory="$(Solution)" />
+         
+      <Exec 
+         Condition="'$(Solution)' != 'Lab4'"
+         Command="dotnet run --project &quot;$(RunProject)&quot;" 
+         WorkingDirectory="$(Solution)" />
    </Target>
 </Project>
