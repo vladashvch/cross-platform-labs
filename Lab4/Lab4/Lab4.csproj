@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+ <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>VShevchenko</AssemblyName>
+    <Authors>VladaShevchenko</Authors>              
+    <Description>A console app with a class library Lab4</Description> 
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Lab4.Library\Lab4.Library.csproj" />
+  </ItemGroup>
+
+</Project>
