@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Lab9.ViewModels.Tables"
+             x:Class="Lab9.Pages.Tables.MedicatonType"
+             Title="Medication Type Page">
+
+    <ContentPage.BindingContext>
+        <vm:MedicationTypeViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <Grid Padding="10" RowDefinitions="Auto,Auto,*">
+
+            <Grid Grid.Row="0" ColumnDefinitions="Auto,*,*,Auto,*" BackgroundColor="LightGray" Padding="5" HeightRequest="40">
+                <Label Text="Medication Type Code" Grid.Column="0" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                <Label Text="Medication Type Name" Grid.Column="1" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                <Label Text="Medication Type Description" Grid.Column="2" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                <Label Text="Example" Grid.Column="3" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+            </Grid>
+
+            <CollectionView Grid.Row="1" ItemsSource="{Binding MedicationTypesList}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="5" ColumnDefinitions="Auto,*,*,Auto,*">
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="BackgroundColor" Value="White" />
+                                    <Style.Triggers>
+                                        <DataTrigger TargetType="Grid" Binding="{Binding IsEvenRow}" Value="True">
+                                            <Setter Property="BackgroundColor" Value="#f5f5f5" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <Label Text="{Binding MedicationTypeCode}" Grid.Column="0" HorizontalTextAlignment="Center" />
+                            <Label Text="{Binding MedicationTypeName}" Grid.Column="1" HorizontalTextAlignment="Center" />
+                            <Label Text="{Binding MedicationTypeDescription}" Grid.Column="2" HorizontalTextAlignment="Center" />
+                            <Label Text="{Binding Example}" Grid.Column="3" HorizontalTextAlignment="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </Grid>
+    </ScrollView>
+</ContentPage>

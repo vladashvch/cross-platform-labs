@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Lab9.ViewModels.Tables"
+             x:Class="Lab9.Pages.Tables.PatientMedication"
+             Title="PatientMedicationPage">
+    <ContentPage.BindingContext>
+        <vm:PatientMedicationViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <Grid Padding="10" RowDefinitions="Auto,Auto,*">
+            <Grid Grid.Row="0" ColumnDefinitions="Auto,*,*,Auto,*" BackgroundColor="LightGray" Padding="5" HeightRequest="40">
+                <Label Text="Patient Name" Grid.Column="0" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                <Label Text="Medication Name" Grid.Column="1" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                <Label Text="Dosage" Grid.Column="2" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                <Label Text="Date Administered" Grid.Column="3" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                <Label Text="Comments" Grid.Column="4" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+            </Grid>
+
+            <CollectionView Grid.Row="1" ItemsSource="{Binding PatientMedicationsList}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="5" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                            <Label Text="{Binding FullName}" Grid.Row="0" FontSize="Medium" />
+                            <Label Text="{Binding Medication.MedicationName}" Grid.Row="1" FontSize="Medium" />
+                            <Label Text="{Binding Dosage}" Grid.Row="2" FontSize="Medium" />
+                            <Label Text="{Binding DateTimeAdministered, StringFormat='{0:MM/dd/yyyy}'}" Grid.Row="3" FontSize="Medium" />
+                            <Label Text="{Binding Comments}" Grid.Row="4" FontSize="Medium" />
+                            <Label Text="{Binding OtherDetails}" Grid.Row="5" FontSize="Medium" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </ScrollView>
+</ContentPage>
