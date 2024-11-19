@@ -1,4 +1,4 @@
 .env
 .vagrant
-
+/Lab6/db/
 /Lab6/Migrations/
