@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Lab9.Pages.СustomMainPage"
+             Title="Home Page">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30,0" Spacing="25">
+            <Image
+                Source="dotnet_bot.png"
+                HeightRequest="185"
+                Aspect="AspectFit"
+                SemanticProperties.Description="dot net bot in a race car number eight" />
+
+            <ActivityIndicator
+                IsRunning="{Binding IsBusy}"
+                IsVisible="{Binding IsBusy}"
+                Color="Blue"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                WidthRequest="50"
+                HeightRequest="50" />
+
+            <Grid ColumnSpacing="20" RowSpacing="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+
+                <Button
+                    Text="Go to About Page"
+                    Clicked="OnButtonClicked"
+                    Grid.Row="0" Grid.Column="0" />
+
+                <Button
+                    Text="Go to Chart Page"
+                    Clicked="OnButtonClicked"
+                    Grid.Row="1" Grid.Column="0" />
+
+                <Button
+                    Text="Log Out"
+                    Clicked="OnButtonClicked"
+                    Grid.Row="2" Grid.Column="0" />
+
+                <Button
+                    Text="Go to Staff table Page"
+                    Clicked="OnButtonClicked"
+                    Grid.Row="0" Grid.Column="1" />
+
+                <Button
+                    Text="Go to PatientMedication Page"
+                    Clicked="OnButtonClicked"
+                    Grid.Row="1" Grid.Column="1" />
+
+                <Button
+                    Text="Go to MedicatonType table Page"
+                    Clicked="OnButtonClicked"
+                    Grid.Row="2" Grid.Column="1" />
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+
+
+</ContentPage>

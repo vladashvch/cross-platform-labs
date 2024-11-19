@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Lab9.PagesWearOS.WearOSLogin"
+             Title="Login Page">
+
+    <VerticalStackLayout >
+        <Label 
+            Text="Login" 
+            FontSize="12" 
+            TextColor="White"
+            HorizontalOptions="Center"  />
+
+        <Entry 
+            Text="{Binding Username}" 
+            Placeholder="Username" 
+            MaxLength="20"
+            WidthRequest="90"
+            HeightRequest="30"
+            FontSize="8" />
+
+        <Entry 
+            Text="{Binding Password}" 
+            Placeholder="Password" 
+            IsPassword="True" 
+            MaxLength="20"
+            WidthRequest="90"
+            HeightRequest="30"
+            FontSize="8" />
+
+        <Button 
+            Text="Login" 
+            Command="{Binding LoginCommand}" 
+            HorizontalOptions="Center"
+            WidthRequest="70"
+            HeightRequest="30"
+            FontSize="6"/>
+
+    </VerticalStackLayout>
+</ContentPage>

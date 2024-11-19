@@ -1,0 +1,10 @@
+@Lab6_HostAddress = https://localhost:7125
+
+GET {{Lab6_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+GET {{Lab6_HostAddress}}/lab6/medication-types
+
+###

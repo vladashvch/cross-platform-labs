@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Lab9.ViewModels.Tables"
+             x:Class="Lab9.PagesWearOS.Tables.WearOSStaff"
+             Title="StaffPage">
+
+    <ContentPage.BindingContext>
+        <vm:StaffViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <Grid Padding="10" RowDefinitions="Auto,Auto,*">
+
+            <Grid Grid.Row="0" ColumnDefinitions="Auto,*,*,Auto,*" Padding="5" Margin="0,20,0,0">
+                <VerticalStackLayout Grid.ColumnSpan="5" Spacing="4">
+                    <Label Text="Add New Staff Member" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center" />
+
+                    <Entry Placeholder="First Name" Text="{Binding NewFirstName}" Grid.Column="1" FontSize="6" />
+                    <Entry Placeholder="Last Name" Text="{Binding NewLastName}" Grid.Column="2" FontSize="6" />
+                    <Entry Placeholder="Gender" Text="{Binding NewGender}" Grid.Column="3" FontSize="6" />
+                    <Entry Placeholder="Qualifications" Text="{Binding NewQualifications}" Grid.Column="4" FontSize="6" />
+                   
+                    <Button Text="Add Staff Member" Command="{Binding AddStaffCommand}" 
+                BackgroundColor="CornflowerBlue" TextColor="White"
+                HorizontalOptions="Center" Padding="20,10" Margin="0,20" FontSize="14"/>
+                </VerticalStackLayout>
+            </Grid>
+
+            <Grid Grid.Row="1" ColumnDefinitions="Auto,*,*,Auto,*" BackgroundColor="LightGray" Padding="5" HeightRequest="40">
+                <Label Text="ID" Grid.Column="0" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="6" />
+                <Label Text="First Name" Grid.Column="1" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="6" />
+                <Label Text="Last Name" Grid.Column="2" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="6" />
+                <Label Text="Gender" Grid.Column="3" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="6" />
+                <Label Text="Qualifications" Grid.Column="4" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="6" />
+            </Grid>
+
+            <CollectionView Grid.Row="2" ItemsSource="{Binding StaffList}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="5" ColumnDefinitions="Auto,*,*,Auto,*">
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="BackgroundColor" Value="White" />
+                                    <Style.Triggers>
+                                        <DataTrigger TargetType="Grid" Binding="{Binding IsEvenRow}" Value="True">
+                                            <Setter Property="BackgroundColor" Value="#f5f5f5" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <Label Text="{Binding StaffId}" Grid.Column="0" HorizontalTextAlignment="Center" FontSize="12" />
+                            <Label Text="{Binding FirstName}" Grid.Column="1" HorizontalTextAlignment="Center" FontSize="12" />
+                            <Label Text="{Binding LastName}" Grid.Column="2" HorizontalTextAlignment="Center" FontSize="12" />
+                            <Label Text="{Binding Gender}" Grid.Column="3" HorizontalTextAlignment="Center" FontSize="12" />
+                            <Label Text="{Binding Qualifications}" Grid.Column="4" HorizontalTextAlignment="Center" FontSize="12" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </Grid>
+    </ScrollView>
+
+</ContentPage>
