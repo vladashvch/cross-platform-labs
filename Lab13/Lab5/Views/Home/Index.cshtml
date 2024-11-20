@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@section Styles {
+    @await Html.PartialAsync("_Styles", "home")
+}
+@section Scripts {
+    @await Html.PartialAsync("_Scripts", "home")
+}
+
+<div id="home-app"></div>

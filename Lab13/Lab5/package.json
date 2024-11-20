@@ -1,0 +1,42 @@
+{
+  "name": "lab5",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "scripts": {
+    "debug": "webpack --config webpack.dev.js",
+    "dev": "webpack --config webpack.dev.js --json=stats.json --watch --progress",
+    "prd": "webpack --config webpack.prd.js --json=stats.json"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "-": "^0.0.1",
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "babel-loader": "^9.2.1",
+    "bootstrap": "^5.3.3",
+    "copy-webpack-plugin": "^12.0.2",
+    "css-loader": "^7.1.2",
+    "glob": "^11.0.0",
+    "mini-css-extract-plugin": "^2.9.2",
+    "postcss": "^8.4.49",
+    "postcss-loader": "^8.1.1",
+    "postcss-normalize": "^13.0.1",
+    "resolve-url-loader": "^5.0.0",
+    "sass": "^1.80.7",
+    "sass-loader": "^16.0.3",
+    "save": "^2.9.0",
+    "save-dev": "^0.0.1-security",
+    "style-loader": "^4.0.0",
+    "terser-webpack-plugin": "^5.3.10",
+    "vue": "^3.5.12",
+    "vue-loader": "^17.4.2",
+    "vue-style-loader": "^4.1.3",
+    "vue-template-compiler": "^0.1.0",
+    "webpack": "^5.96.1",
+    "webpack-assets-manifest": "^5.2.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-merge": "^6.0.1"
+  }
+}
