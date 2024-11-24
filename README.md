@@ -36,6 +36,8 @@ Laboratory Work on subject Cross-Platform App Development by **Vlada Shevchenko*
 
 - [Laboratory work №10](https://github.com/vladashvch/cross-platform-labs/tree/master/Lab10)
 
+- [Laboratory work №11](https://github.com/vladashvch/cross-platform-labs/tree/master/Lab11)
+
 - [Laboratory work №13](https://github.com/vladashvch/cross-platform-labs/tree/master/Lab13)
 
 ## Usage
